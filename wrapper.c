@@ -6,6 +6,7 @@
 int main(int argc, char **argv) {
   const char extra_paths[] = "<extra_paths>";
   const char command[] = "<command>";
+  const char appname[] = "<appname>";
 
   char option[] = "-u";
   char config_file[] = "<config_file>";
@@ -33,11 +34,8 @@ int main(int argc, char **argv) {
       memcpy(updated, extra_paths, sizeof(extra_paths));
     }
 
-    if (setenv("PATH", updated, 1) != 0) {
-      perror("Failed to set the PATH variable");
-      free(updated);
-      return 1;
-    }
+    setenv("NVIM_APPNAME", appname, 1);
+    setenv("PATH", updated, 1);
   }
 
   {

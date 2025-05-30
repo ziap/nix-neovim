@@ -38,7 +38,7 @@
     }
   '';
 
-  init-lua = writeText "init.lua" /* lua */ ''
+  init-lua = /* lua */ ''
     local packpath = "${packpath}"
     vim.opt.packpath:append(packpath)
     vim.opt.runtimepath:append(packpath)
@@ -73,16 +73,18 @@
   neovim-custom = pkgs.stdenv.mkDerivation {
     pname = "neovim-custom";
     version = "1.0.0";
-    src = pkgs.writeText "wrapper.c" (builtins.replaceStrings
+    src = writeText "wrapper.c" (builtins.replaceStrings
       [
         "<extra_paths>"
         "<command>"
+        "<appname>"
         "<config_file>"
       ]
       [
         (lib.makeBinPath extraPackages)
         "${pkgs.neovim-unwrapped}/bin/nvim"
-        "${init-lua}"
+        "nvim-${builtins.hashString "sha256" init-lua}"
+        "${writeText "init.lua" init-lua}"
       ]
       (builtins.readFile ./wrapper.c));
     dontUnpack = true;
