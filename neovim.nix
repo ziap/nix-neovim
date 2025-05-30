@@ -75,15 +75,19 @@
     version = "1.0.0";
     src = writeText "wrapper.c" (builtins.replaceStrings
       [
-        "<extra_paths>"
+        "<extra-paths>"
         "<command>"
         "<appname>"
-        "<config_file>"
+        "<config-file>"
       ]
       [
         (lib.makeBinPath extraPackages)
         "${pkgs.neovim-unwrapped}/bin/nvim"
-        "nvim-${builtins.hashString "sha256" init-lua}"
+        "nvim-${builtins.convertHash {
+          hash = (builtins.hashString "sha256" init-lua);
+          hashAlgo = "sha256";
+          toHashFormat = "nix32";
+        }}"
         "${writeText "init.lua" init-lua}"
       ]
       (builtins.readFile ./wrapper.c));

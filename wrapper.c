@@ -4,12 +4,12 @@
 #include <unistd.h>
 
 int main(int argc, char **argv) {
-  const char extra_paths[] = "<extra_paths>";
+  const char extra_paths[] = "<extra-paths>";
   const char command[] = "<command>";
   const char appname[] = "<appname>";
 
   char option[] = "-u";
-  char config_file[] = "<config_file>";
+  char config_file[] = "<config-file>";
 
   const char *path = getenv("PATH");
   if (path == NULL) path = "";
