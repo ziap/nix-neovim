@@ -25,12 +25,16 @@ int main(int argc, char **argv) {
 
   {
     char *updated = buf;
-    memcpy(updated, path, path_len);
-    updated[path_len] = ':';
-    memcpy(updated + path_len + 1, extra_paths, sizeof(extra_paths));
+    if (path_len > 0) {
+      memcpy(updated, path, path_len);
+      updated[path_len] = ':';
+      memcpy(updated + path_len + 1, extra_paths, sizeof(extra_paths));
+    } else {
+      memcpy(updated, extra_paths, sizeof(extra_paths));
+    }
 
     if (setenv("PATH", updated, 1) != 0) {
-      perror("Failed to set virtual environment");
+      perror("Failed to set the PATH variable");
       free(updated);
       return 1;
     }
