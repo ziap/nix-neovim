@@ -5,22 +5,21 @@
     nixpkgs.url = "nixpkgs/nixos-unstable";
   };
 
-  outputs = { self, nixpkgs }:
-    nixpkgs.lib.mergeAttrsList 
-      (map
-        (system: let
-          pkgs = import nixpkgs {inherit system;};
-          custom-neovim = pkgs.callPackage ./neovim.nix {};
-        in {
-          packages.${system}.default = custom-neovim;
-          apps.${system}.default = {
-            type = "app";
-            program = "${custom-neovim}/bin/nvim";
-          };
-          devShell.${system} = pkgs.mkShell {
-            buildInputs = [custom-neovim];
-          };
-        })
-        (builtins.attrNames nixpkgs.legacyPackages)
-      );
+  outputs = { self, nixpkgs }: let
+    forAllSystems = nixpkgs.lib.genAttrs nixpkgs.lib.systems.flakeExposed;
+    neovimPackage = system: let
+      pkgs = import nixpkgs {inherit system;};
+    in 
+      pkgs.callPackage ./neovim.nix {};
+  in {
+    packages = forAllSystems (system: {
+      default = neovimPackage system;
+    });
+    apps = forAllSystems (system: {
+      default = {
+        type = "app";
+        program = "${neovimPackage system}/bin/nvim";
+      };
+    });
+  };
 }
