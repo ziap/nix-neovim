@@ -9,8 +9,10 @@ local servers = {
   'rust_analyzer',
   'nushell',
   'svelte',
+  'gopls',
 }
 
 for _, name in ipairs(servers) do
   vim.lsp.enable(name)
 end
+

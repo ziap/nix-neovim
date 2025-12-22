@@ -16,8 +16,13 @@ local function location()
   return tostring(row).."/"..total..":"..tostring(col + 1)
 end
 
+local count_filetypes = {
+  markdown = true,
+  typst = true,
+}
+
 local function md_wordcount()
-  if vim.bo.filetype == "markdown" then
+  if count_filetypes[vim.bo.filetype] then
     local wc = vim.fn.wordcount()
     local words = "/"..tostring(wc.words).." words"
     if wc.visual_words ~= nil then
