@@ -17,8 +17,9 @@ local function location()
 end
 
 local count_filetypes = {
-  markdown = true,
+  text = true,
   typst = true,
+  markdown = true,
 }
 
 local function md_wordcount()
