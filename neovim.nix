@@ -38,20 +38,26 @@
     }
   '';
 
+  loadLuaModule = filepath: /* lua */ ''
+    ;(function()
+      ${builtins.readFile filepath}
+    end)()
+  '';
+
   init-lua = /* lua */ ''
     local packpath = "${packpath}"
     vim.opt.packpath:append(packpath)
     vim.opt.runtimepath:append(packpath)
 
-    ${builtins.readFile ./lua/plugins/telescope.lua}
-    ${builtins.readFile ./lua/plugins/lualine.lua}
-    ${builtins.readFile ./lua/plugins/treesitter.lua}
-    ${builtins.readFile ./lua/plugins/lsp.lua}
-    ${builtins.readFile ./lua/plugins/cmp.lua}
+    ${loadLuaModule ./lua/plugins/telescope.lua}
+    ${loadLuaModule ./lua/plugins/lualine.lua}
+    ${loadLuaModule ./lua/plugins/treesitter.lua}
+    ${loadLuaModule ./lua/plugins/lsp.lua}
+    ${loadLuaModule ./lua/plugins/cmp.lua}
 
-    ${builtins.readFile ./lua/options.lua}
-    ${builtins.readFile ./lua/keymap.lua}
-    ${builtins.readFile ./lua/autocmd.lua}
+    ${loadLuaModule ./lua/options.lua}
+    ${loadLuaModule ./lua/keymap.lua}
+    ${loadLuaModule ./lua/autocmd.lua}
   '';
 
   extraPackages = [
@@ -93,7 +99,7 @@
       (builtins.readFile ./wrapper.c));
     dontUnpack = true;
     buildPhase = ''
-      cc -o nvim -O2 -s $src
+      $CC -o nvim -O2 -s $src
     '';
     installPhase = ''
       mkdir -p $out/bin
