@@ -71,7 +71,7 @@
 
     # LSPs for languages that doesn't need complex version management
     pkgs.vscode-langservers-extracted
-    pkgs.nodePackages.typescript-language-server
+    pkgs.typescript-language-server
     pkgs.emmet-ls
     pkgs.clang-tools
   ];
