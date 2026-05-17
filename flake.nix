@@ -8,7 +8,7 @@
   outputs = { self, nixpkgs }: let
     forAllSystems = nixpkgs.lib.genAttrs nixpkgs.lib.systems.flakeExposed;
     neovimPackage = system: let
-      pkgs = import nixpkgs {inherit system;};
+      pkgs = import nixpkgs { inherit system; };
     in 
       pkgs.callPackage ./neovim.nix {};
   in {
