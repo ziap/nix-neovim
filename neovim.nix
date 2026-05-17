@@ -62,8 +62,6 @@
 
   extraPackages = [
     pkgs.git
-    pkgs.xclip
-    pkgs.wl-clipboard
 
     # Dependencies for telescope
     pkgs.ripgrep
@@ -74,7 +72,10 @@
     pkgs.typescript-language-server
     pkgs.emmet-ls
     pkgs.clang-tools
-  ];
+  ] ++ (if pkgs.stdenv.isLinux then [
+    pkgs.xclip
+    pkgs.wl-clipboard
+  ] else []);
 
   neovim-custom = pkgs.stdenv.mkDerivation {
     pname = "neovim-custom";
