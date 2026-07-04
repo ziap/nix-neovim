@@ -70,6 +70,7 @@
     # LSPs for languages that doesn't need complex version management
     pkgs.vscode-langservers-extracted
     pkgs.typescript-language-server
+    pkgs.deno
     pkgs.emmet-ls
     pkgs.clang-tools
   ] ++ (if pkgs.stdenv.isLinux then [
