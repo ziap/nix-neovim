@@ -73,6 +73,9 @@
     pkgs.deno
     pkgs.emmet-ls
     pkgs.clang-tools
+
+    # For launching pyright inside a uv-managed project environment
+    pkgs.uv
   ] ++ (if pkgs.stdenv.isLinux then [
     pkgs.xclip
     pkgs.wl-clipboard
