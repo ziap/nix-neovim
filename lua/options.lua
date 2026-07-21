@@ -29,7 +29,23 @@ vim.opt.ttyfast = true
 
 -- Sync clipboard lazily
 vim.schedule(function()
-  vim.opt.clipboard = 'unnamedplus'
+  if vim.env.SSH_TTY then
+    vim.o.clipboard = 'unnamedplus'
+    vim.g.clipboard = {
+      name = 'OSC 52',
+      copy = {
+        ['+'] = require('vim.ui.clipboard.osc52').copy('+'),
+        ['*'] = require('vim.ui.clipboard.osc52').copy('*'),
+      },
+      paste = {
+        ['+'] = require('vim.ui.clipboard.osc52').paste('+'),
+        ['*'] = require('vim.ui.clipboard.osc52').paste('*'),
+      },
+    }
+  else
+    -- local: use wl-clipboard / xclip as usual
+    vim.o.clipboard = 'unnamedplus'
+  end
 end)
 
 -- Layout
