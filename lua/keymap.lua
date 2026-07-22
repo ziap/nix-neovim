@@ -137,3 +137,35 @@ vim.on_key(function(char)
     end
   end
 end, nil)
+
+-- Copy reference
+local function copy_file_reference()
+  local file = vim.fn.expand('%:.') -- Relative path. Use '%:p' for full absolute path.
+  if file == '' then
+    vim.notify('No file open', vim.log.levels.WARN)
+    return
+  end
+
+  local mode = vim.api.nvim_get_mode().mode
+  local start_line, end_line
+
+  if mode:match('[vV\22]') then
+    local v_line = vim.fn.line('v')
+    local cur_line = vim.fn.line('.')
+    start_line = math.min(v_line, cur_line)
+    end_line = math.max(v_line, cur_line)
+  else
+    start_line = vim.fn.line('.')
+    end_line = start_line
+  end
+
+  local result = (start_line == end_line)
+    and string.format("%s:%d", file, start_line)
+    or string.format("%s:%d-%d", file, start_line, end_line)
+
+  vim.fn.setreg('+', result)
+  vim.notify('Copied: ' .. result, vim.log.levels.INFO)
+end
+
+nmap('<leader>cy', copy_file_reference, true)
+vmap('<leader>cy', copy_file_reference, true)

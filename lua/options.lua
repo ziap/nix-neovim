@@ -30,6 +30,14 @@ vim.opt.ttyfast = true
 -- Sync clipboard lazily
 vim.schedule(function()
   if vim.env.SSH_TTY then
+    -- Copy over OSC 52 so yanks reach the local system clipboard
+    local function paste()
+      return {
+        vim.fn.split(vim.fn.getreg(''), '\n'),
+        vim.fn.getregtype(''),
+      }
+    end
+
     vim.o.clipboard = 'unnamedplus'
     vim.g.clipboard = {
       name = 'OSC 52',
@@ -38,8 +46,8 @@ vim.schedule(function()
         ['*'] = require('vim.ui.clipboard.osc52').copy('*'),
       },
       paste = {
-        ['+'] = require('vim.ui.clipboard.osc52').paste('+'),
-        ['*'] = require('vim.ui.clipboard.osc52').paste('*'),
+        ['+'] = paste,
+        ['*'] = paste,
       },
     }
   else
