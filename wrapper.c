@@ -40,10 +40,10 @@ int main(int argc, char **argv) {
 
   {
     char **args = buf;
-    memcpy(args, argv, sizeof(char*) * argc);
-    args[argc + 0] = option;
-    args[argc + 1] = config_file;
-    args[argc + 2] = NULL;
+    memcpy(args + 3, argv + 1, sizeof(char*) * argc);
+    args[0] = argv[0];
+    args[1] = option;
+    args[2] = config_file;
 
     execv(command, args);
     perror("Failed to execute command");
