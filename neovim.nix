@@ -76,7 +76,7 @@
 
     # For launching pyright inside a uv-managed project environment
     pkgs.uv
-  ] ++ (if pkgs.stdenv.isLinux then [
+  ] ++ (if pkgs.stdenv.hostPlatform.isLinux then [
     pkgs.xclip
     pkgs.wl-clipboard
   ] else []);
