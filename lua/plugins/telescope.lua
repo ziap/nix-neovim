@@ -5,7 +5,9 @@ local layout_strategies = require('telescope.pickers.layout_strategies')
 layout_strategies.custom = function(picker, max_columns, max_lines, layout_config)
   local layout = layout_strategies.horizontal(picker, max_columns, max_lines, layout_config)
 
-  layout.preview.title = 'Preview'
+  if layout.preview then
+    layout.preview.title = 'Preview'
+  end
 
   layout.results.title = ''
   layout.results.borderchars = { '─', '│', '─', '│', '├', '┤', '╯', '╰' }
@@ -22,7 +24,7 @@ telescope.setup {
     layout_config = {
       prompt_position = 'top',
       horizontal = {
-        width = 0.8,
+        width = 7 / 8,
         preview_width = 15 / 32,
       },
     },
